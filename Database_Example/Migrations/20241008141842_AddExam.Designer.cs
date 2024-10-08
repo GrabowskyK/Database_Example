@@ -3,6 +3,7 @@ using Database_Example.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database_Example.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241008141842_AddExam")]
+    partial class AddExam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,36 +23,6 @@ namespace Database_Example.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Database_Example.Model.Exam", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DateLastAttempt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FlashCardsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Procentage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FlashCardsId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Exam");
-                });
 
             modelBuilder.Entity("Database_Example.Model.FavouriteWords", b =>
                 {
@@ -215,25 +188,6 @@ namespace Database_Example.Migrations
                     b.ToTable("Word");
                 });
 
-            modelBuilder.Entity("Database_Example.Model.Exam", b =>
-                {
-                    b.HasOne("Database_Example.Model.FlashCards", "FlashCards")
-                        .WithMany()
-                        .HasForeignKey("FlashCardsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Database_Example.Model.Users", "Users")
-                        .WithMany("Exams")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("FlashCards");
-
-                    b.Navigation("Users");
-                });
-
             modelBuilder.Entity("Database_Example.Model.FavouriteWords", b =>
                 {
                     b.HasOne("Database_Example.Model.Users", "Users")
@@ -293,8 +247,6 @@ namespace Database_Example.Migrations
 
             modelBuilder.Entity("Database_Example.Model.Users", b =>
                 {
-                    b.Navigation("Exams");
-
                     b.Navigation("FavouriteWords");
 
                     b.Navigation("FlashCards");

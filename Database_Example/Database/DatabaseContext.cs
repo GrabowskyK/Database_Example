@@ -27,10 +27,18 @@ namespace Database_Example.Database
                 .WithOne(w => w.FlashCards)
                 .HasForeignKey(w => w.FlashCardId)
                 .OnDelete(DeleteBehavior.NoAction);  // Usunięcie słowa nie usunie fiszki
+
+            modelBuilder.Entity<Users>()
+                .HasMany(u => u.Exams)
+                .WithOne(e => e.Users)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+                
         }
         DbSet<Users> User { get; set; }
         DbSet<FlashCards> FlashCards { get; set; }
         DbSet<Words> Word { get; set; }
         DbSet<FavouriteWords> FavouriteUsersWord { get; set; }
+        DbSet<Exam> Exam { get; set; }
     }
 }
