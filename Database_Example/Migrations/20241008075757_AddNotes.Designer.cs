@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database_Example.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241007203726_AddUserIdFix")]
-    partial class AddUserIdFix
+    [Migration("20241008075757_AddNotes")]
+    partial class AddNotes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,29 @@ namespace Database_Example.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Database_Example.Model.FavouriteWords", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WordsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsersId");
+
+                    b.HasIndex("WordsId");
+
+                    b.ToTable("FavouriteUsersWord");
+                });
 
             modelBuilder.Entity("Database_Example.Model.FlashCards", b =>
                 {
@@ -44,15 +67,15 @@ namespace Database_Example.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecondLanguage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -64,6 +87,40 @@ namespace Database_Example.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("FlashCards");
+                });
+
+            modelBuilder.Entity("Database_Example.Model.Notes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Created")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Updated")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("Database_Example.Model.Users", b =>
@@ -81,6 +138,9 @@ namespace Database_Example.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LearnInRow")
+                        .HasColumnType("int");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -110,9 +170,6 @@ namespace Database_Example.Migrations
                     b.Property<int>("FlashCardId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FlashCardsId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Translate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -123,9 +180,28 @@ namespace Database_Example.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FlashCardsId");
+                    b.HasIndex("FlashCardId");
 
                     b.ToTable("Word");
+                });
+
+            modelBuilder.Entity("Database_Example.Model.FavouriteWords", b =>
+                {
+                    b.HasOne("Database_Example.Model.Users", "Users")
+                        .WithMany("FavouriteWords")
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Database_Example.Model.Words", "Words")
+                        .WithMany()
+                        .HasForeignKey("WordsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Users");
+
+                    b.Navigation("Words");
                 });
 
             modelBuilder.Entity("Database_Example.Model.FlashCards", b =>
@@ -139,12 +215,23 @@ namespace Database_Example.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("Database_Example.Model.Notes", b =>
+                {
+                    b.HasOne("Database_Example.Model.Users", "Users")
+                        .WithMany("Notes")
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("Database_Example.Model.Words", b =>
                 {
                     b.HasOne("Database_Example.Model.FlashCards", "FlashCards")
                         .WithMany("Words")
-                        .HasForeignKey("FlashCardsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("FlashCardId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("FlashCards");
@@ -157,7 +244,11 @@ namespace Database_Example.Migrations
 
             modelBuilder.Entity("Database_Example.Model.Users", b =>
                 {
+                    b.Navigation("FavouriteWords");
+
                     b.Navigation("FlashCards");
+
+                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }

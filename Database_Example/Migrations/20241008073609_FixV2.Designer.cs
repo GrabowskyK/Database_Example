@@ -3,6 +3,7 @@ using Database_Example.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database_Example.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241008073609_FixV2")]
+    partial class FixV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,40 +89,6 @@ namespace Database_Example.Migrations
                     b.ToTable("FlashCards");
                 });
 
-            modelBuilder.Entity("Database_Example.Model.Notes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Created")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Updated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("Notes");
-                });
-
             modelBuilder.Entity("Database_Example.Model.Users", b =>
                 {
                     b.Property<int>("Id")
@@ -135,9 +104,6 @@ namespace Database_Example.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LearnInRow")
-                        .HasColumnType("int");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -212,17 +178,6 @@ namespace Database_Example.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Database_Example.Model.Notes", b =>
-                {
-                    b.HasOne("Database_Example.Model.Users", "Users")
-                        .WithMany("Notes")
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Users");
-                });
-
             modelBuilder.Entity("Database_Example.Model.Words", b =>
                 {
                     b.HasOne("Database_Example.Model.FlashCards", "FlashCards")
@@ -244,8 +199,6 @@ namespace Database_Example.Migrations
                     b.Navigation("FavouriteWords");
 
                     b.Navigation("FlashCards");
-
-                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }

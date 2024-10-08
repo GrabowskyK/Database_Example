@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DatabaseContext>(options =>
-options.UseSqlServer("Server = (localdb)\\mysql; Database = DulingoTest; Trusted_Connection = True; MultipleActiveResultSets = true"));
+options.UseSqlServer("Server = (localdb)\\mysql; Database = DulingoTestv2; Trusted_Connection = True; MultipleActiveResultSets = true"));
 
 var app = builder.Build();
 
