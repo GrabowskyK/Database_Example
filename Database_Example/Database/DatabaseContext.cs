@@ -40,5 +40,6 @@ namespace Database_Example.Database
         DbSet<Words> Word { get; set; }
         DbSet<FavouriteWords> FavouriteUsersWord { get; set; }
         DbSet<Exam> Exam { get; set; }
+        DbSet<KnownWords> KnownWord { get; set; }
     }
 }
