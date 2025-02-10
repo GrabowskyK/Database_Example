@@ -10,6 +10,7 @@
         public string Category { get; set; }
         public string Created { get; set; }
        // public int UserId { get; set; }
+        public bool Private { get; set; }
         public Users Users { get; set; }
         public ICollection<Words> Words {  get; set; }
     }

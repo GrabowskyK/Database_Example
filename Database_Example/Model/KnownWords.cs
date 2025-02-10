@@ -4,7 +4,9 @@
     {
         public int Id { get; set; }
         public Words Words { get; set; }
-        public Users Users { get; set; }
+        //public Users Users { get; set; }
+
+        public UserStartedCourses UserStartedCourses { get; set; }
 
     }
 }

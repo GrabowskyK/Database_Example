@@ -14,6 +14,7 @@
         public ICollection<FlashCards> FlashCards { get; set; }
         public ICollection<FavouriteWords> FavouriteWords { get; set; }
         public ICollection<Notes> Notes { get; set; }   
-        public ICollection<Exam> Exams { get; set; }
+       // public ICollection<Exam> Exams { get; set; }
+        public ICollection<UserStartedCourses> UserStartedCourses { get; set; }
     }
 }

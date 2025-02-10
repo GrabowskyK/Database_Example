@@ -1,4 +1,6 @@
+using Database_Example;
 using Database_Example.Database;
+using Database_Example.Model;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -10,8 +12,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<SimpleDataService, SimpleDataService>();
 builder.Services.AddDbContext<DatabaseContext>(options =>
-options.UseSqlServer("Server = (localdb)\\mysql; Database = DulingoTestv2; Trusted_Connection = True; MultipleActiveResultSets = true"));
+options.UseSqlServer("Server=tcp:grabowskyserver.database.windows.net,1433;Initial Catalog=valapptodelete;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\""));
 
 var app = builder.Build();
 
