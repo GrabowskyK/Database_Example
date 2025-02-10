@@ -19,11 +19,11 @@ options.UseSqlServer("Server=tcp:grabowskyserver.database.windows.net,1433;Initi
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 
