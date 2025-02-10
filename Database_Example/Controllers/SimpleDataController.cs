@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Database_Example.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class SimpleDataController : Controller
     {
         private readonly SimpleDataService simpleDataService;
